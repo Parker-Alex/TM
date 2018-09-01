@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tmall.dao.CategoryDao">
+    <select id="list" resultType="com.tmall.pojo.Category">
+        select *
+        from   category
+        order by id desc
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count(*) from category;
+    </select>
+
+    <insert id="addCategory" keyProperty="id" useGeneratedKeys="true" parameterType="com.tmall.pojo.Category">
+        insert into category (name) values (#{name});
+    </insert>
+
+    <delete id="deleteCategory" parameterType="int">
+        delete from category where id = #{id};
+    </delete>
+
+    <select id="getCategory" resultType="com.tmall.pojo.Category">
+        select * from category where id = #{id};
+    </select>
+
+    <update id="updateCategory" parameterType="com.tmall.pojo.Category">
+        update category set name = #{name} where id = #{id};
+    </update>
+</mapper>
