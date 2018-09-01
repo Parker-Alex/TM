@@ -1,22 +1,20 @@
-<!-- 模仿天猫整站ssm 教程 为how2j.cn 版权所有-->
-<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
-<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
-	
 
 <script>
 var deleteOrderItem = false;
 var deleteOrderItemid = 0;
+
 $(function(){
 
+//-----------------------模态框删除订单----------------------
 	$("a.deleteOrderItem").click(function(){
 		deleteOrderItem = false;
 		var oiid = $(this).attr("oiid")
 		deleteOrderItemid = oiid;
 		$("#deleteConfirmModal").modal('show');	   
 	});
+
 	$("button.deleteConfirmButton").click(function(){
 		deleteOrderItem = true;
 		$("#deleteConfirmModal").modal('hide');
@@ -26,21 +24,21 @@ $(function(){
 		if(deleteOrderItem){
 			var page="foredeleteOrderItem";
 			$.post(
-				    page,
-				    {"oiid":deleteOrderItemid},
-				    function(result){
-						if("success"==result){
-							$("tr.cartProductItemTR[oiid="+deleteOrderItemid+"]").hide();
-						}
-						else{
-							location.href="loginPage";
-						}
-				    }
-				);
-			
+				page,
+				{"oiid":deleteOrderItemid},
+				function(result){
+					if("success"==result){
+						$("tr.cartProductItemTR[oiid="+deleteOrderItemid+"]").hide();
+					}
+					else{
+						location.href="loginPage";
+					}
+				}
+			);
 		}
-	})	
-	
+	});
+//-----------------------模态框删除订单----------------------
+
 	$("img.cartProductItemIfSelected").click(function(){
 		var selectit = $(this).attr("selectit")
 		if("selectit"==selectit){
@@ -57,6 +55,7 @@ $(function(){
 		syncCreateOrderButton();
 		calcCartSumPriceAndNumber();
 	});
+
 	$("img.selectAllItem").click(function(){
 		var selectit = $(this).attr("selectit")
 		if("selectit"==selectit){
@@ -112,6 +111,7 @@ $(function(){
 			num = stock;
 		syncPrice(pid,num,price);
 	});
+
 	$(".numberMinus").click(function(){
 		var pid=$(this).attr("pid");
 		var stock= $("span.orderItemStock[pid="+pid+"]").text();
@@ -123,7 +123,8 @@ $(function(){
 			num=1;
 		syncPrice(pid,num,price);
 	});	
-	
+
+//-----------------------结算提交事件----------------------------
 	$("button.createOrderButton").click(function(){
 		var params = "";
 		$(".cartProductItemIfSelected").each(function(){
@@ -135,10 +136,7 @@ $(function(){
 		params = params.substring(1);
 		location.href="forebuy?"+params;
 	});
-	
-	
-	
-})
+});
 
 function syncCreateOrderButton(){
 	var selectAny = false;
@@ -158,6 +156,7 @@ function syncCreateOrderButton(){
 	}
 		
 }
+
 function syncSelect(){
 	var selectAll = true;
 	$(".cartProductItemIfSelected").each(function(){
@@ -170,10 +169,8 @@ function syncSelect(){
 		$("img.selectAllItem").attr("src","img/site/cartSelected.png");
 	else
 		$("img.selectAllItem").attr("src","img/site/cartNotSelected.png");
-	
-	
-	
 }
+
 function calcCartSumPriceAndNumber(){
 	var sum = 0;
 	var totalNumber = 0;
@@ -214,6 +211,7 @@ function syncPrice(pid,num,price){
 </script>	
 
 <title>购物车</title>
+
 <div class="cartDiv">
 	<div class="cartTitle pull-right">
 		<span>已选商品  (不含运费)</span>
@@ -244,7 +242,7 @@ function syncPrice(pid,num,price){
 						<td>
 							<img selectit="false" oiid="${oi.id}" class="cartProductItemIfSelected" src="img/site/cartNotSelected.png">
 							<a style="display:none" href="#nowhere"><img src="img/site/cartSelected.png"></a>
-							<img class="cartProductImg"  src="img/productSingle_middle/${oi.product.firstProductImage.id}.jpg">
+							<img class="cartProductImg"  src="img/product/${oi.product.id}/${oi.product.pictures[0].id}.jpg">
 						</td>
 						<td>
 							<div class="cartProductLinkOutDiv">
@@ -258,15 +256,15 @@ function syncPrice(pid,num,price){
 							
 						</td>
 						<td>
-							<span class="cartProductItemOringalPrice">￥${oi.product.originalPrice}</span>
-							<span  class="cartProductItemPromotionPrice">￥${oi.product.promotePrice}</span>
+							<span class="cartProductItemOringalPrice">￥${oi.product.originalprice}</span>
+							<span  class="cartProductItemPromotionPrice">￥${oi.product.promoteprice}</span>
 							
 						</td>
 						<td>
 						
 							<div class="cartProductChangeNumberDiv">
 								<span class="hidden orderItemStock " pid="${oi.product.id}">${oi.product.stock}</span>
-								<span class="hidden orderItemPromotePrice " pid="${oi.product.id}">${oi.product.promotePrice}</span>
+								<span class="hidden orderItemPromotePrice " pid="${oi.product.id}">${oi.product.promoteprice}</span>
 								<a  pid="${oi.product.id}" class="numberMinus" href="#nowhere">-</a>
 								<input pid="${oi.product.id}" oiid="${oi.id}" class="orderItemNumberSetting" autocomplete="off" value="${oi.number}">
 								<a  stock="${oi.product.stock}" pid="${oi.product.id}" class="numberPlus" href="#nowhere">+</a>
@@ -275,7 +273,7 @@ function syncPrice(pid,num,price){
 						 </td>
 						<td >
 							<span class="cartProductItemSmallSumPrice" oiid="${oi.id}" pid="${oi.product.id}" >
-							￥<fmt:formatNumber type="number" value="${oi.product.promotePrice*oi.number}" minFractionDigits="2"/>
+							￥<fmt:formatNumber type="number" value="${oi.product.promoteprice * oi.number}" minFractionDigits="2"/>
 							</span>
 						
 						</td>

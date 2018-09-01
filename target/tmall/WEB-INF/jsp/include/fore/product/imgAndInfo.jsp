@@ -5,6 +5,7 @@
 <script>
  
 $(function(){
+
     var stock = ${p.stock};
     $(".productNumberSetting").keyup(function(){
         var num= $(".productNumberSetting").val();
@@ -35,40 +36,41 @@ $(function(){
      
     $(".addCartButton").removeAttr("disabled");
 
+//-------------------------添加购物车事件----------------------------
     $(".addCartLink").click(function(){
         var page = "forecheckLogin";
         $.get(
-                page,
-                function(result){
-                    if("success"==result){
-                        var pid = ${p.id};
-                        var num= $(".productNumberSetting").val();
-                        var addCartpage = "foreaddCart";
-                        $.get(
-                            addCartpage,
-                            {"pid":pid,"num":num},
-                            function(result){
-                                if("success"==result){
-                                    $(".addCartButton").html("已加入购物车");
-                                    $(".addCartButton").attr("disabled","disabled");
-                                    $(".addCartButton").css("background-color","lightgray")
-                                    $(".addCartButton").css("border-color","lightgray")
-                                    $(".addCartButton").css("color","black")
-
-                                }
-                                else{
-
-                                }
+            page,
+            function(result){
+                if("success"==result){
+                    var pid = ${p.id};
+                    var num= $(".productNumberSetting").val();
+                    var addCartpage = "foreaddCart";
+                    $.get(
+                        addCartpage,
+                        {"pid":pid,"num":num},
+                        function(result){
+                            if ("success"==result){
+                                $(".addCartButton").html("已加入购物车");
+                                $(".addCartButton").attr("disabled","disabled");
+                                $(".addCartButton").css("background-color","lightgray");
+                                $(".addCartButton").css("border-color","lightgray");
+                                $(".addCartButton").css("color","black");
                             }
-                        );                          
-                    }
-                    else{
-                        $("#loginModal").modal('show');                     
-                    }
+                            else{
+
+                            }
+                        }
+                    );
                 }
+                else{
+                    $("#loginModal").modal('show');
+                }
+            }
         );      
         return false;
     });
+
 //------------------点击购买按钮事件-------------------------
     $(".buyLink").click(function(){
         var page = "forecheckLogin";
@@ -86,6 +88,7 @@ $(function(){
         );      
         return false;
     });
+
 //------------------登录提交按钮事件-------------------------
     $("button.loginSubmitButton").click(function () {
         var name = $("#name").val();
@@ -228,7 +231,9 @@ $(function(){
          
         <div class="buyDiv">
             <a class="buyLink" href="forebuyone?pid=${p.id}"><button class="buyButton">立即购买</button></a>
-            <a href="#nowhere" class="addCartLink"><button class="addCartButton"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</button></a>
+            <a href="#nowhere" class="addCartLink">
+                <button class="addCartButton"><span class="glyphicon glyphicon-shopping-cart"></span>加入购物车</button>
+            </a>
         </div>
     </div>
      

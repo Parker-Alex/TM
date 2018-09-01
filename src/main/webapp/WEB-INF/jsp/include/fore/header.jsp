@@ -47,7 +47,6 @@
 
         $(function(){
 
-
             $("a.productDetailTopReviewLink").click(function(){
                 $("div.productReviewDiv").show();
                 $("div.productDetailDiv").hide();

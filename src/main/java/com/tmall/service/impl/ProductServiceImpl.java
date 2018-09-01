@@ -2,8 +2,10 @@ package com.tmall.service.impl;
 
 import com.tmall.dao.ProductMapper;
 import com.tmall.pojo.Category;
+import com.tmall.pojo.Picture;
 import com.tmall.pojo.Product;
 import com.tmall.pojo.ProductExample;
+import com.tmall.service.PictureService;
 import com.tmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,15 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    private PictureService pictureService;
+
     @Override
     public Product getProduct(Integer id) {
-        return productMapper.selectByPrimaryKey(id);
+        Product product = productMapper.selectByPrimaryKey(id);
+        List<Picture> pictures = pictureService.list(product.getId());
+        product.setPictures(pictures);
+        return product;
     }
 
     @Override

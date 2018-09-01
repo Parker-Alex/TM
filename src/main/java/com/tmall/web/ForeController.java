@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,6 +35,14 @@ public class ForeController {
     @Autowired
     private PropertyValueService propertyValueService;
 
+    @Autowired
+    private OrderItemService orderItemService;
+
+    /**
+     * 展示主页面方法
+     * @param model
+     * @return
+     */
     @RequestMapping("/home")
     public String home(Model model) {
         List<Category> categoryList = categoryService.list();
@@ -49,6 +58,12 @@ public class ForeController {
         return "fore/home";
     }
 
+    /**
+     * 用户注册方法
+     * @param model
+     * @param user
+     * @return
+     */
     @RequestMapping("/foreregister")
     public String foreregister(Model model, User user) {
         String name = user.getName();
@@ -61,6 +76,14 @@ public class ForeController {
         return "redirect:/registersuccess";
     }
 
+    /**
+     * 用户登录方法
+     * @param model
+     * @param name
+     * @param password
+     * @param session
+     * @return
+     */
     @RequestMapping("/forelogin")
     public String forelogin(Model model, @RequestParam("name") String name,
                             @RequestParam("password") String password,
@@ -74,12 +97,23 @@ public class ForeController {
         return "redirect:/home";
     }
 
+    /**
+     * 用户注销方法
+     * @param session
+     * @return
+     */
     @RequestMapping("/forelogout")
     public String forelogout(HttpSession session) {
         session.removeAttribute("userinfo");
         return "redirect:/home";
     }
 
+    /**
+     * 展示产品相关信息方法
+     * @param model
+     * @param pid
+     * @return
+     */
     @RequestMapping("/foreproduct")
     public String foreproduct(Model model, Integer pid) {
 //        通过产品id得到产品
@@ -103,6 +137,7 @@ public class ForeController {
     }
 
     /**
+     * 验证是否登录方法
      * @ResponseBody 将数据写入response的body数据区中
      * @param session
      * @return
@@ -117,6 +152,13 @@ public class ForeController {
         return "fail";
     }
 
+    /**
+     * 模态框用户登录方法
+     * @param name
+     * @param password
+     * @param session
+     * @return
+     */
     @RequestMapping("/foreloginAjax")
     @ResponseBody
     public String foreloginAjax(@RequestParam("name") String name,
@@ -130,6 +172,12 @@ public class ForeController {
         return "fail";
     }
 
+    /**
+     * 展示分类信息方法
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/forecategory")
     public String foreCategory(@RequestParam("cid") Integer id, Model model) {
         Category category = categoryService.getCategory(id);
@@ -146,6 +194,12 @@ public class ForeController {
         return "fore/category";
     }
 
+    /**
+     * 根据关键字查找产品方法
+     * @param model
+     * @param keyword
+     * @return
+     */
     @RequestMapping("/foresearch")
     public String foreSearch(Model model, String keyword) {
         PageHelper.offsetPage(0, 20);
@@ -158,6 +212,130 @@ public class ForeController {
         }
         model.addAttribute("ps", products);
         return "fore/searchResult";
+    }
+
+    /**
+     * 立即购买产品方法
+     * @param pid
+     * @param num
+     * @param session
+     * @return
+     */
+    @RequestMapping("/forebuyone")
+    public String foreBuyOne(Integer pid, Integer num, HttpSession session) {
+        Product product = productService.getProduct(pid);
+        User user = (User) session.getAttribute("userinfo");
+        List<OrderItem> orderItems = orderItemService.listByUid(user.getId());
+//        标识是否已有该产品的订单
+        boolean having = false;
+        int orderItemId = 0;
+        for (OrderItem orderItem : orderItems) {
+//            intValue() 将Integer类型对象转化成int类型
+            if (orderItem.getPid().intValue() == product.getId().intValue()) {
+                orderItem.setNumber(orderItem.getNumber() + num);
+                orderItemService.updateOI(orderItem);
+                orderItemId = orderItem.getId();
+                having = true;
+                break;
+            }
+        }
+//        如果没有该产品的订单，就生成新的订单
+        if (!having) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setNumber(num);
+            orderItem.setUid(user.getId());
+            orderItem.setPid(product.getId());
+            orderItemService.addOI(orderItem);
+            orderItemId = orderItem.getId();
+        }
+        return "redirect:forebuy?oiid=" + orderItemId;
+    }
+
+    /**
+     * 购买后跳转到提交订单信息页面方法
+     * @param model
+     * @param oiid
+     * @param session
+     * @return
+     */
+    @RequestMapping("/forebuy")
+    public String foreBuy(Model model, String[] oiid, HttpSession session) {
+        List<OrderItem> orderItems = new ArrayList<>();
+//        总金额
+        float total = 0;
+        for (String oiId : oiid) {
+            int id = Integer.parseInt(oiId);
+            OrderItem orderItem = orderItemService.getOI(id);
+            total += orderItem.getProduct().getPromoteprice() * orderItem.getNumber();
+            orderItems.add(orderItem);
+        }
+        session.setAttribute("ois", orderItems);
+        model.addAttribute("total", total);
+        return "fore/buy";
+    }
+
+    /**
+     * 添加购物车方法
+     * @param pid
+     * @param num
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("/foreaddCart")
+    @ResponseBody
+    public String foreAddCart(Integer pid, Integer num, Model model, HttpSession session) {
+        Product product = productService.getProduct(pid);
+        User user = (User) session.getAttribute("userinfo");
+        boolean having = false;
+        List<OrderItem> orderItems = orderItemService.listByUid(user.getId());
+        for (OrderItem oi : orderItems) {
+            if (oi.getProduct().getId().intValue() == product.getId().intValue()) {
+                oi.setNumber(oi.getNumber() + num);
+                orderItemService.updateOI(oi);
+                having = true;
+                break;
+            }
+        }
+        if (!having) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setUid(user.getId());
+            orderItem.setPid(product.getId());
+            orderItem.setNumber(num);
+            orderItemService.addOI(orderItem);
+        }
+        return "success";
+    }
+
+    /**
+     * 查看购物车方法
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("/forecart")
+    public String foreCart(Model model, HttpSession session) {
+        forecheckLogin(session);
+        User user = (User) session.getAttribute("userinfo");
+        List<OrderItem> orderItems = orderItemService.listByUid(user.getId());
+        model.addAttribute("ois", orderItems);
+        return "fore/cart";
+    }
+
+    /**
+     * 删除订单方法
+     * @param oiid
+     * @param session
+     * @return
+     */
+    @RequestMapping("/foredeleteOrderItem")
+    @ResponseBody
+    public String foreDeleteOrderItem(Integer oiid, HttpSession session) {
+        User user = (User) session.getAttribute("userinfo");
+        if (user == null)
+            return "fail";
+        orderItemService.deleteOI(oiid);
+        return "success";
     }
 
 }

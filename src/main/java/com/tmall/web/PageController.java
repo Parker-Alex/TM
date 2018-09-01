@@ -15,6 +15,11 @@ public class PageController {
     @Autowired
     private CategoryService categoryService;
 
+    /**
+     * 跳转到注册页面的方法
+     * @param model
+     * @return
+     */
     @RequestMapping("/registerPage")
     public String rigister(Model model) {
         List<Category> categories = categoryService.list();
@@ -22,11 +27,19 @@ public class PageController {
         return "fore/register";
     }
 
+    /**
+     * 添砖到注册成功页面的方法
+     * @return
+     */
     @RequestMapping("/registersuccess")
     public String registersuccess() {
         return "/fore/registerSuccess";
     }
 
+    /**
+     * 跳转到登录页面方法
+     * @return
+     */
     @RequestMapping("/loginpage")
     public String login() {
         return "fore/login";
