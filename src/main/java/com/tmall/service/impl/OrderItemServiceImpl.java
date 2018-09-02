@@ -1,6 +1,7 @@
 package com.tmall.service.impl;
 
 import com.tmall.dao.OrderItemMapper;
+import com.tmall.pojo.Order;
 import com.tmall.pojo.OrderItem;
 import com.tmall.pojo.OrderItemExample;
 import com.tmall.pojo.Product;
@@ -62,6 +63,34 @@ public class OrderItemServiceImpl implements OrderItemService {
     public void setProducts(List<OrderItem> orderItems) {
         for (OrderItem orderItem : orderItems) {
             setProduct(orderItem);
+        }
+    }
+
+    @Override
+    public void fillOrder(Order order) {
+        float total = 0;
+        int orderItemNum = 0;
+//        通过订单id查找对应的订单项列表,并为订单项列表填充产品信息
+        OrderItemExample example = new OrderItemExample();
+        example.createCriteria().andOidEqualTo(order.getId());
+        example.setOrderByClause("id desc");
+        List<OrderItem> orderItems = orderItemMapper.selectByExample(example);
+        setProducts(orderItems);
+//        循环遍历订单项列表,得到订单的总金额和订单项总数
+        for (OrderItem orderItem : orderItems) {
+            total += orderItem.getProduct().getPromoteprice() * orderItem.getNumber();
+            orderItemNum += orderItem.getNumber();
+        }
+//        设置订单属性
+        order.setTotal(total);
+        order.setOrderItemNum(orderItemNum);
+        order.setOrderItems(orderItems);
+    }
+
+    @Override
+    public void fillOrders(List<Order> orders) {
+        for (Order order : orders) {
+            fillOrder(order);
         }
     }
 }

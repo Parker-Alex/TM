@@ -44,4 +44,13 @@ public class PageController {
     public String login() {
         return "fore/login";
     }
+
+    /**
+     * 跳转到支付页面方法
+     * @return
+     */
+    @RequestMapping("/pay")
+    public String pay() {
+        return "fore/alipay";
+    }
 }

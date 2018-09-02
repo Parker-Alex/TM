@@ -1,7 +1,3 @@
-<!-- 模仿天猫整站ssm 教程 为how2j.cn 版权所有-->
-<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
-<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -101,8 +97,8 @@ $(function(){
 			<table class="orderListItemTable" orderStatus="${o.status}" oid="${o.id}">
 				<tr class="orderListItemFirstTR">
 					<td colspan="2">
-					<b><fmt:formatDate value="${o.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></b> 
-					<span>订单号: ${o.orderCode} 
+					<b><fmt:formatDate value="${o.createdate}" pattern="yyyy-MM-dd HH:mm:ss"/></b>
+					<span>订单号: ${o.ordercode}
 					</span>
 					</td>
 					<td  colspan="2"><img width="13px" src="img/site/orderItemTmall.png">天猫商场</td>
@@ -121,7 +117,7 @@ $(function(){
 				</tr>
 				<c:forEach items="${o.orderItems}" var="oi" varStatus="st">
 					<tr class="orderItemProductInfoPartTR" >
-						<td class="orderItemProductInfoPartTD"><img width="80" height="80" src="img/productSingle_middle/${oi.product.firstProductImage.id}.jpg"></td>
+						<td class="orderItemProductInfoPartTD"><img width="80" height="80" src="img/product/${oi.product.id}/${oi.product.pictures[0].id}.jpg"></td>
 						<td class="orderItemProductInfoPartTD">
 							<div class="orderListItemProductLinkOutDiv">
 								<a href="foreproduct?pid=${oi.product.id}">${oi.product.name}</a>
@@ -134,15 +130,15 @@ $(function(){
 						</td>
 						<td  class="orderItemProductInfoPartTD" width="100px">
 						
-							<div class="orderListItemProductOriginalPrice">￥<fmt:formatNumber type="number" value="${oi.product.originalPrice}" minFractionDigits="2"/></div>
-							<div class="orderListItemProductPrice">￥<fmt:formatNumber type="number" value="${oi.product.promotePrice}" minFractionDigits="2"/></div>
+							<div class="orderListItemProductOriginalPrice">￥<fmt:formatNumber type="number" value="${oi.product.originalprice}" minFractionDigits="2"/></div>
+							<div class="orderListItemProductPrice">￥<fmt:formatNumber type="number" value="${oi.product.promoteprice}" minFractionDigits="2"/></div>
 		
 		
 						</td>
 						<c:if test="${st.count==1}">
 						 
 							<td valign="top" rowspan="${fn:length(o.orderItems)}" class="orderListItemNumberTD orderItemOrderInfoPartTD" width="100px">
-								<span class="orderListItemNumber">${o.totalNumber}</span>
+								<span class="orderListItemNumber">${o.orderItemNum}</span>
 							</td>
 							<td valign="top" rowspan="${fn:length(o.orderItems)}" width="120px" class="orderListItemProductRealPriceTD orderItemOrderInfoPartTD">
 								<div class="orderListItemProductRealPrice">￥<fmt:formatNumber  minFractionDigits="2"  maxFractionDigits="2" type="number" value="${o.total}"/></div>

@@ -1,17 +1,22 @@
 package com.tmall.web;
 
 import com.github.pagehelper.PageHelper;
+import com.tmall.enums.OrderEnum;
 import com.tmall.pojo.*;
 import com.tmall.service.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import sun.security.x509.OIDMap;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -37,6 +42,9 @@ public class ForeController {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private OrderService orderService;
 
     /**
      * 展示主页面方法
@@ -336,6 +344,52 @@ public class ForeController {
             return "fail";
         orderItemService.deleteOI(oiid);
         return "success";
+    }
+
+    /**
+     * 创建订单方法
+     * @param model
+     * @param order
+     * @param session
+     * @return
+     */
+    @RequestMapping("/forecreateOrder")
+    public String forecreateOrder(Model model, Order order, HttpSession session) {
+        User user = (User) session.getAttribute("userinfo");
+        String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+        order.setOrdercode(orderCode);
+        order.setUid(user.getId());
+        order.setCreatedate(new Date());
+        order.setStatus(OrderEnum.WAIT_PAY.getMsg());
+        List<OrderItem> orderItems = (List<OrderItem>) session.getAttribute("ois");
+        float total = orderService.add(order, orderItems);
+        return "redirect:/pay?oid=" + order.getId() + "&total=" + total;
+    }
+
+    /**
+     * 确认支付方法
+     * @param model
+     * @param oid
+     * @return
+     */
+    @RequestMapping("/forepayed")
+    public String forepayed(Model model, Integer oid) {
+        Order order = orderService.getOrder(oid);
+        order.setStatus(OrderEnum.WAIT_DELIVERY.getMsg());
+        order.setPaydate(new Date());
+        orderService.updateOrder(order);
+        model.addAttribute("o", order);
+        return "fore/payed";
+    }
+
+    @RequestMapping("/forebought")
+    public String forebought(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("userinfo");
+//        找到当前用户下没有被删除的订单列表
+        List<Order> orders = orderService.listByUid(user.getId(), OrderEnum.DELETE.getMsg());
+        orderItemService.fillOrders(orders);
+        model.addAttribute("os", orders);
+        return "fore/bought";
     }
 
 }

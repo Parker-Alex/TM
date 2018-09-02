@@ -107,7 +107,7 @@
 					<img class="leaveMessageImg" src="img/site/leaveMessage.png">
 				</span>
 				<span class="leaveMessageTextareaSpan">
-					<textarea name="userMessage" class="leaveMessageTextarea"></textarea>
+					<textarea name="message" class="leaveMessageTextarea"></textarea>
 					<div>
 						<span>还可以输入200个字符</span>
 					</div>

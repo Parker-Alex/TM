@@ -1,5 +1,6 @@
 package com.tmall.service;
 
+import com.tmall.pojo.Order;
 import com.tmall.pojo.OrderItem;
 
 import java.util.List;
@@ -19,4 +20,8 @@ public interface OrderItemService {
     void setProduct(OrderItem orderItem);
 
     void setProducts(List<OrderItem> orderItems);
+
+    void fillOrder(Order order);
+
+    void fillOrders(List<Order> orders);
 }

@@ -1,11 +1,12 @@
 package com.tmall.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class Order {
     private Integer id;
 
-    private Integer ordercode;
+    private String ordercode;
 
     private String address;
 
@@ -29,6 +30,36 @@ public class Order {
 
     private Integer uid;
 
+    private List<OrderItem> orderItems;
+//    总金额
+    private float total;
+//    订单项总数
+    private int orderItemNum;
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public int getOrderItemNum() {
+        return orderItemNum;
+    }
+
+    public void setOrderItemNum(int orderItemNum) {
+        this.orderItemNum = orderItemNum;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -37,11 +68,11 @@ public class Order {
         this.id = id;
     }
 
-    public Integer getOrdercode() {
+    public String getOrdercode() {
         return ordercode;
     }
 
-    public void setOrdercode(Integer ordercode) {
+    public void setOrdercode(String ordercode) {
         this.ordercode = ordercode;
     }
 

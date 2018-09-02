@@ -120,7 +120,7 @@
       #{deliverydate,jdbcType=TIMESTAMP}, #{confirmdate,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
       #{uid,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.tmall.pojo.Order">
+  <insert id="insertSelective" parameterType="com.tmall.pojo.Order" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
     insert into t_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
