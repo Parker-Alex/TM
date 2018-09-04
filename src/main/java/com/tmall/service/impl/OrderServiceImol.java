@@ -66,4 +66,12 @@ public class OrderServiceImol implements OrderService {
         example.setOrderByClause("id desc");
         return orderMapper.selectByExample(example);
     }
+
+    @Override
+    public List<Order> list() {
+        OrderExample example = new OrderExample();
+        example.setOrderByClause("id desc");
+        return orderMapper.selectByExample(example);
+    }
+
 }

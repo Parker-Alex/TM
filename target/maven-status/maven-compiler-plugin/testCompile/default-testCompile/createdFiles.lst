@@ -1,0 +1,4 @@
+com\tmall\BaseTest.class
+com\tmall\service\UserServiceTest.class
+com\tmall\dao\CategoryDaoTest.class
+com\tmall\service\CategoryServiceTest.class

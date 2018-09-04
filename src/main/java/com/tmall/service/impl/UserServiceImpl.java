@@ -52,4 +52,11 @@ public class UserServiceImpl implements UserService {
             return null;
         return users.get(0);
     }
+
+    @Override
+    public List<User> list() {
+        UserExample example = new UserExample();
+        example.setOrderByClause("id desc");
+        return userMapper.selectByExample(example);
+    }
 }

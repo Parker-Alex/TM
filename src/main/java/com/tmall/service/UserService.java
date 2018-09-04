@@ -2,6 +2,8 @@ package com.tmall.service;
 
 import com.tmall.pojo.User;
 
+import java.util.List;
+
 public interface UserService {
 
     void addUser(User user);
@@ -15,4 +17,6 @@ public interface UserService {
     boolean isExist(String name);
 
     User getByNameAndPw(String name, String password);
+
+    List<User> list();
 }

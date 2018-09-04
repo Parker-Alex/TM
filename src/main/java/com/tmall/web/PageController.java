@@ -53,4 +53,9 @@ public class PageController {
     public String pay() {
         return "fore/alipay";
     }
+
+    @RequestMapping("/admin")
+    public String admin() {
+        return "admin/home";
+    }
 }

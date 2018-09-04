@@ -9,6 +9,7 @@ var deleteOrder = false;
 var deleteOrderid = 0;
 
 $(function(){
+
 	$("a[orderStatus]").click(function(){
 		var orderStatus = $(this).attr("orderStatus");
 		if('all'==orderStatus){
@@ -22,7 +23,8 @@ $(function(){
 		$("div.orderType div").removeClass("selectedOrderType");
 		$(this).parent("div").addClass("selectedOrderType");
 	});
-	
+
+//--------------------------删除订单-----------------------------
 	$("a.deleteOrderLink").click(function(){
 		deleteOrderid = $(this).attr("oid");
 		deleteOrder = false;
@@ -38,32 +40,30 @@ $(function(){
 		if(deleteOrder){
 			var page="foredeleteOrder";
 			$.post(
-				    page,
-				    {"oid":deleteOrderid},
-				    function(result){
-						if("success"==result){
-							$("table.orderListItemTable[oid="+deleteOrderid+"]").hide();
-						}
-						else{
-							location.href="loginPage";
-						}
-				    }
-				);
-			
+                page,
+                {"oid":deleteOrderid},
+                function(result){
+                    if("success"==result){
+                        $("table.orderListItemTable[oid="+deleteOrderid+"]").hide();
+                    }
+                    else{
+                        location.href="loginPage";
+                    }
+                }
+            );
 		}
-	})		
+	});
 	
 	$(".ask2delivery").click(function(){
 		var link = $(this).attr("link");
 		$(this).hide();
 		page = link;
 		$.ajax({
-			   url: page,
-			   success: function(result){
-				alert("卖家已秒发，刷新当前页面，即可进行确认收货")
-			   }
-			});
-		
+		   url: page,
+		   success: function(result){
+			alert("卖家已秒发，刷新当前页面，即可进行确认收货")
+		   }
+		});
 	});
 });
 
@@ -151,14 +151,14 @@ $(function(){
 									</a>
 								</c:if>
 								<c:if test="${o.status=='waitPay' }">
-									<a href="forealipay?oid=${o.id}&total=${o.total}">
+									<a href="pay?oid=${o.id}&total=${o.total}">
 										<button class="orderListItemConfirm">付款</button>
 									</a>								
 								</c:if>
 								
 								<c:if test="${o.status=='waitDelivery' }">
 									<span>待发货</span>
-<%-- 									<button class="btn btn-info btn-sm ask2delivery" link="admin_order_delivery?id=${o.id}">催卖家发货</button> --%>
+									<%--<button class="btn btn-info btn-sm ask2delivery" link="admin_order_delivery?id=${o.id}">催卖家发货</button> --%>
 									
 								</c:if>
 

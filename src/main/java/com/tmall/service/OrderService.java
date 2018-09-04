@@ -18,4 +18,6 @@ public interface OrderService {
     float add(Order order, List<OrderItem> orderItems);
 
     List<Order> listByUid(Integer uid, String status);
+
+    List<Order> list();
 }

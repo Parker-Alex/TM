@@ -75,6 +75,7 @@ public class ForeController {
     @RequestMapping("/foreregister")
     public String foreregister(Model model, User user) {
         String name = user.getName();
+//        判断用户名是否存在
         if (!userService.isExist(name)) {
             model.addAttribute("msg", "用户名已被使用，请重新输入!");
             model.addAttribute("username", name);
@@ -382,6 +383,12 @@ public class ForeController {
         return "fore/payed";
     }
 
+    /**
+     * 查看购买记录方法
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping("/forebought")
     public String forebought(HttpSession session, Model model) {
         User user = (User) session.getAttribute("userinfo");
@@ -390,6 +397,15 @@ public class ForeController {
         orderItemService.fillOrders(orders);
         model.addAttribute("os", orders);
         return "fore/bought";
+    }
+
+    @RequestMapping("/foredeleteOrder")
+    @ResponseBody
+    public String foredeleteOrder(Integer oid) {
+        Order order = orderService.getOrder(oid);
+        order.setStatus(OrderEnum.DELETE.getMsg());
+        orderService.updateOrder(order);
+        return "success";
     }
 
 }

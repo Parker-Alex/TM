@@ -36,6 +36,16 @@ public class Order {
 //    订单项总数
     private int orderItemNum;
 
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public float getTotal() {
         return total;
     }

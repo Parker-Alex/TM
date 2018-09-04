@@ -29,36 +29,36 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession();
-//        定义不需要认证的访问路径
-        String[] noNeedAuthPage = new String[]{
-                "/home",
-                "/foresearch",
-//                产品排序(待完成)
-                "/sortProduct",
-                "/forecategory",
-                "/foreproduct",
-                "/loginpage",
-                "/forelogin",
-                "/registerPage",
-                "/foreregister",
-                "/registersuccess",
-                "/forecheckLogin",
-                "/foreloginAjax",
-//                后台请求路径（待完成）
-                "/admin"
-        };
-//        得到请求路径
-        String uri = request.getRequestURI();
-//        如果定义的路径不包含请求路径
-        if (!Arrays.asList(noNeedAuthPage).contains(uri)) {
-            User user = (User) session.getAttribute("userinfo");
-            if (user == null) {
-//                如果用户没有登录，跳转到登录页面
-                response.sendRedirect("/loginpage");
-                return false;
-            }
-        }
+//        HttpSession session = request.getSession();
+////        定义不需要认证的访问路径
+//        String[] noNeedAuthPage = new String[]{
+//                "/home",
+//                "/foresearch",
+////                产品排序(待完成)
+//                "/sortProduct",
+//                "/forecategory",
+//                "/foreproduct",
+//                "/loginpage",
+//                "/forelogin",
+//                "/registerPage",
+//                "/foreregister",
+//                "/registersuccess",
+//                "/forecheckLogin",
+//                "/foreloginAjax",
+////                后台请求路径（待完成）
+//                "/admin"
+//        };
+////        得到请求路径
+//        String uri = request.getRequestURI();
+////        如果定义的路径不包含请求路径
+//        if (!Arrays.asList(noNeedAuthPage).contains(uri)) {
+//            User user = (User) session.getAttribute("userinfo");
+//            if (user == null) {
+////                如果用户没有登录，跳转到登录页面
+//                response.sendRedirect("/loginpage");
+//                return false;
+//            }
+//        }
         return true;
     }
 
