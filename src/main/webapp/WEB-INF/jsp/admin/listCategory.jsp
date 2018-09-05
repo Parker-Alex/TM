@@ -50,8 +50,8 @@
                         <td>${c.id}</td>
                         <td><img height="40px" src="img/category/${c.id}.jpg"></td>
                         <td>${c.name}</td>
-                        <td><a href="/property_list?cid=${c.id}"><span class="glyphicon glyphicon-th-list"></span></a></td>
-                        <td><a href="/product_list?cid=${c.id}"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
+                        <td><a href="property_list?cid=${c.id}"><span class="glyphicon glyphicon-th-list"></span></a></td>
+                        <td><a href="product_list?cid=${c.id}"><span class="glyphicon glyphicon-shopping-cart"></span></a></td>
                         <td><a href="category_edit?id=${c.id}"><span class="glyphicon glyphicon-edit"></span></a></td>
                         <td><a deleteLink="true" href="category_delete?id=${c.id}"><span class="glyphicon glyphicon-trash"></span></a></td>
                     </tr>
@@ -67,7 +67,7 @@
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增分类</div>
         <div class="panel-body">
-            <form method="post" id="addForm" action="/category_add" enctype="multipart/form-data">
+            <form method="post" id="addForm" action="category_add" enctype="multipart/form-data">
                 <table class="addTable">
                     <tr>
                         <td>分类名称</td>

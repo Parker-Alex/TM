@@ -24,4 +24,6 @@ public interface OrderItemService {
     void fillOrder(Order order);
 
     void fillOrders(List<Order> orders);
+
+    List<OrderItem> listByPid(Integer pid);
 }

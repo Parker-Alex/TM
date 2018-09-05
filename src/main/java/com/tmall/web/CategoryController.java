@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("")
 public class CategoryController {
 
     @Autowired
@@ -40,7 +39,7 @@ public class CategoryController {
     @Autowired
     private ProductController productController;
 
-    @RequestMapping("category_list")
+    @RequestMapping("/category_list")
     public String list(Model model, Page page) {
         PageHelper.offsetPage(page.getStart(), page.getCount());
         List<Category> categoryList = categoryService.list();
@@ -51,7 +50,7 @@ public class CategoryController {
         return "admin/listCategory";
     }
 
-    @RequestMapping("category_add")
+    @RequestMapping("/category_add")
     public String add(Category category, HttpSession session, UploadedImageFile uploadedImageFile) throws IOException {
         categoryService.addCategory(category);
 //        得到文件夹
@@ -67,7 +66,7 @@ public class CategoryController {
         return "redirect:/category_list";
     }
 
-    @RequestMapping("category_delete")
+    @RequestMapping("/category_delete")
     public String delete(Integer id, HttpSession session) {
         List<Property> propertyList = propertyService.list(id);
         for (Property p :
@@ -87,14 +86,14 @@ public class CategoryController {
         return "redirect:/category_list";
     }
 
-    @RequestMapping("category_edit")
+    @RequestMapping("/category_edit")
     public String edit(Integer id, Model model) {
         Category category = categoryService.getCategory(id);
         model.addAttribute("category", category);
         return "admin/editCategory";
     }
 
-    @RequestMapping("category_update")
+    @RequestMapping("/category_update")
     public String update(Category category, HttpSession session, UploadedImageFile uploadedImageFile) throws IOException {
         categoryService.updateCategory(category);
         MultipartFile image = uploadedImageFile.getImage();

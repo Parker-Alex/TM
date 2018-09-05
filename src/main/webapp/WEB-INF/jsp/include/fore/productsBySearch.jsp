@@ -18,7 +18,7 @@
                 </a>
                 <a class="tmallLink" href="foreproduct?pid=${p.id}">天猫专卖</a>
                 <div class="show1 productInfo">
-                        <%--<span class="monthDeal ">月成交 <span class="productDealNumber">${p.saleCount}笔</span></span>--%>
+                    <span class="monthDeal ">月成交 <span class="productDealNumber">${p.dealnum}笔</span></span>
                     <span class="productReview">评价<span class="productReviewNumber">${p.commentnum}</span></span>
                     <span class="wangwang"><img src="img/site/wangwang.png"></span>
                 </div>

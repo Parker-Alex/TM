@@ -34,7 +34,9 @@
                 <table class="editTable">
                     <tr>
                         <td>分类名称</td>
-                        <td><input id="name" name="name" value="${category.name}" type="text" class="form-control"/> </td>
+                        <td>
+                            <input id="name" name="name" value="${category.name}" type="text" class="form-control"/>
+                        </td>
                     </tr>
                     <tr>
                         <td>分类图片</td>

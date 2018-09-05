@@ -15,8 +15,8 @@ $(function(){
 
 </script>
 <c:forEach items="${cs}" var="c">
-	<div cid="${c.id}" class="productsAsideCategorys"
-		 style="background-color: rgba(0,0,0,0.3);">
+	<div cid="${c.id}" class="productsAsideCategorys">
+		 <%--style="background-color: rgba(0,0,0,0.3);">--%>
 	 
 		<c:forEach items="${c.productByRow}" var="ps">
 			<div class="row show1">

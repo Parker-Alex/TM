@@ -4,14 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.tmall.enums.OrderEnum;
 import com.tmall.pojo.*;
 import com.tmall.service.*;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.security.x509.OIDMap;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -133,10 +131,14 @@ public class ForeController {
         List<Comment> comments = commentService.listByPid(pid);
 //        通过产品id得到属性值列表
         List<PropertyValue> propertyValues = propertyValueService.list(pid);
+//        通过产品id得到订单项列表
+        List<OrderItem> orderItems = orderItemService.listByPid(pid);
 //        为属性值添加属性
         propertyValueService.fill(propertyValues);
 //        设置产品的评论数
         product.setCommentnum(comments.size());
+//        设置产品的成交数
+        product.setDealnum(orderItems.size());
 //        将图片列表放入产片中
         product.setPictures(pictures);
         model.addAttribute("p", product);
@@ -216,7 +218,9 @@ public class ForeController {
         for (Product p : products) {
             List<Comment> comments = commentService.listByPid(p.getId());
             List<Picture> pictures = pictureService.list(p.getId());
+            List<OrderItem> orderItems = orderItemService.listByPid(p.getId());
             p.setCommentnum(comments.size());
+            p.setDealnum(orderItems.size());
             p.setPictures(pictures);
         }
         model.addAttribute("ps", products);
@@ -399,6 +403,11 @@ public class ForeController {
         return "fore/bought";
     }
 
+    /**
+     * 删除订单方法
+     * @param oid
+     * @return
+     */
     @RequestMapping("/foredeleteOrder")
     @ResponseBody
     public String foredeleteOrder(Integer oid) {
@@ -406,6 +415,97 @@ public class ForeController {
         order.setStatus(OrderEnum.DELETE.getMsg());
         orderService.updateOrder(order);
         return "success";
+    }
+
+    /**
+     * 提醒发货方法
+     * @param id
+     * @return
+     */
+    @RequestMapping("/foredelivery")
+    @ResponseBody
+    public String foredelivery(Integer id) {
+        Order order = orderService.getOrder(id);
+        order.setStatus(OrderEnum.WAIT_CONFIRM.getMsg());
+        order.setDeliverydate(new Date());
+        orderService.updateOrder(order);
+        return "success";
+    }
+
+    /**
+     * 跳转到收货后确认支付页面方法
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping("/foreconfirmPay")
+    public String foreconfirmPay(Integer id, Model model) {
+        Order order = orderService.getOrder(id);
+        orderService.updateOrder(order);
+        orderItemService.fillOrder(order);
+        model.addAttribute("o", order);
+        return "fore/confirmPay";
+    }
+
+    /**
+     * 确认收货方法
+     * @param id
+     * @return
+     */
+    @RequestMapping("/foreorderConfirmed")
+    public String foreorderConfirmed(Integer id) {
+        Order order = orderService.getOrder(id);
+        order.setStatus(OrderEnum.WAIT_COMMENT.getMsg());
+        order.setConfirmdate(new Date());
+        orderService.updateOrder(order);
+        return "fore/orderConfirmed";
+    }
+
+    /**
+     * 跳转到评论产品方法
+     * @param oid
+     * @param model
+     * @return
+     */
+    @RequestMapping("/forecomment")
+    public String forecomment(Integer oid, Model model) {
+        Order order = orderService.getOrder(oid);
+        orderItemService.fillOrder(order);
+        Product product = order.getOrderItems().get(0).getProduct();
+        List<Comment> comments = commentService.listByPid(product.getId());
+        List<OrderItem> orderItems = orderItemService.listByPid(product.getId());
+        product.setCommentnum(comments.size());
+        product.setDealnum(orderItems.size());
+        model.addAttribute("p", product);
+        model.addAttribute("o", order);
+        model.addAttribute("comments", comments);
+        return "fore/comment";
+    }
+
+    /**
+     * 添加评论方法
+     * @param oid
+     * @param pid
+     * @param content
+     * @param session
+     * @return
+     */
+    @RequestMapping("/foredocomment")
+    public String foredocomment(@RequestParam("oid") Integer oid,
+                                @RequestParam("pid") Integer pid,
+                                @RequestParam("content") String content,
+                                HttpSession session) {
+        Order order = orderService.getOrder(oid);
+        order.setStatus(OrderEnum.FINISH.getMsg());
+        orderService.updateOrder(order);
+        User user = (User) session.getAttribute("userinfo");
+        Comment comment = new Comment();
+        comment.setCreatetime(new Date());
+        comment.setUid(user.getId());
+        comment.setPid(pid);
+        comment.setContent(content);
+        commentService.addComment(comment);
+        return "redirect:/forecomment?oid=" + oid + "&showonly=true";
     }
 
 }

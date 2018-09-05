@@ -25,8 +25,18 @@ public class Product {
     private List<Comment> comments;
 
     private List<Picture> pictures;
-
+//    评价数
     private Integer commentnum;
+//    销售额
+    private Integer dealnum;
+
+    public Integer getDealnum() {
+        return dealnum;
+    }
+
+    public void setDealnum(Integer dealnum) {
+        this.dealnum = dealnum;
+    }
 
     public Integer getCommentnum() {
         return commentnum;

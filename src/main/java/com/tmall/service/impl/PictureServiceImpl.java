@@ -19,7 +19,7 @@ public class PictureServiceImpl implements PictureService {
     public List<Picture> list(Integer pid) {
         PictureExample example = new PictureExample();
         example.createCriteria().andPidEqualTo(pid);
-        example.setOrderByClause("id desc");
+        example.setOrderByClause("id asc");
         return pictureMapper.selectByExample(example);
     }
 

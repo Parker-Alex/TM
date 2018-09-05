@@ -10,7 +10,7 @@
 	<span>喵，欢迎来天猫</span>
 
 	<c:if test="${!empty userinfo}">
-		<a href="/loginpage">${userinfo.name}</a>
+		<a href="#nowhere" disabled="true">${userinfo.name}</a>
 		<a href="forelogout">退出</a>
 	</c:if>
 

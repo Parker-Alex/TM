@@ -6,6 +6,7 @@ D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\dao\PropertyValueM
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\web\ProductController.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\dao\PictureMapper.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\util\UploadedImageFile.java
+D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\web\UserController.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\service\impl\OrderServiceImol.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\dao\ProductMapper.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\service\CommentService.java
@@ -54,5 +55,6 @@ D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\enums\OrderEnum.ja
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\pojo\Property.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\web\CategoryController.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\dao\CategoryDao.java
+D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\web\OrderController.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\service\impl\PropertyServiceImpl.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\pojo\OrderExample.java

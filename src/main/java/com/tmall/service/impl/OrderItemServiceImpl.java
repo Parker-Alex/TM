@@ -43,6 +43,11 @@ public class OrderItemServiceImpl implements OrderItemService {
         orderItemMapper.updateByPrimaryKeySelective(orderItem);
     }
 
+    /**
+     * 通过用户id得到订单项列表
+     * @param uid
+     * @return
+     */
     @Override
     public List<OrderItem> listByUid(Integer uid) {
         OrderItemExample example = new OrderItemExample();
@@ -53,6 +58,10 @@ public class OrderItemServiceImpl implements OrderItemService {
         return orderItems;
     }
 
+    /**
+     * 设置订单项的产品属性
+     * @param orderItem
+     */
     @Override
     public void setProduct(OrderItem orderItem) {
         Product product = productService.getProduct(orderItem.getPid());
@@ -66,6 +75,10 @@ public class OrderItemServiceImpl implements OrderItemService {
         }
     }
 
+    /**
+     * 通过订单id得到对应订单项列表后，设置订单的订单项列表属性,总金额，和订单项总数
+     * @param order
+     */
     @Override
     public void fillOrder(Order order) {
         float total = 0;
@@ -93,4 +106,14 @@ public class OrderItemServiceImpl implements OrderItemService {
             fillOrder(order);
         }
     }
+
+    @Override
+    public List<OrderItem> listByPid(Integer pid) {
+        OrderItemExample example = new OrderItemExample();
+        example.createCriteria().andPidEqualTo(pid);
+        example.setOrderByClause("id desc");
+        return orderItemMapper.selectByExample(example);
+    }
+
+
 }

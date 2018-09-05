@@ -53,7 +53,8 @@ $(function(){
             );
 		}
 	});
-	
+
+	//----------------------提醒发货----------------------
 	$(".ask2delivery").click(function(){
 		var link = $(this).attr("link");
 		$(this).hide();
@@ -61,10 +62,23 @@ $(function(){
 		$.ajax({
 		   url: page,
 		   success: function(result){
-			alert("卖家已秒发，刷新当前页面，即可进行确认收货")
+		       alert("卖家已秒发，刷新当前页面，即可进行确认收货");
+		       //重新加载页面
+               location.reload();
 		   }
 		});
 	});
+
+	// $("#btn_confirm").click(function () {
+    //     var link = $(this).attr("link");
+    //     $.ajax({
+    //         url:link,
+    //         success:function (result) {
+    //             alert("确认收货成功");
+    //             location.reload();
+    //         }
+    //     });
+    // });
 });
 
 </script>
@@ -72,10 +86,10 @@ $(function(){
 <div class="boughtDiv">
 	<div class="orderType">
 		<div class="selectedOrderType"><a orderStatus="all" href="#nowhere">所有订单</a></div>
-		<div><a  orderStatus="waitPay" href="#nowhere">待付款</a></div>
-		<div><a  orderStatus="waitDelivery" href="#nowhere">待发货</a></div>
-		<div><a  orderStatus="waitConfirm" href="#nowhere">待收货</a></div>
-		<div><a  orderStatus="waitReview" href="#nowhere" class="noRightborder">待评价</a></div>
+		<div><a  orderStatus="等待支付" href="#nowhere">待付款</a></div>
+		<div><a  orderStatus="等待发送" href="#nowhere">待发货</a></div>
+		<div><a  orderStatus="等待确认" href="#nowhere">待收货</a></div>
+		<div><a  orderStatus="等待评价" href="#nowhere" class="noRightborder">待评价</a></div>
 		<div class="orderTypeLastOne"><a class="noRightborder">&nbsp;</a></div>
 	</div>
 	<div style="clear:both"></div>
@@ -130,7 +144,7 @@ $(function(){
 						</td>
 						<td  class="orderItemProductInfoPartTD" width="100px">
 						
-							<div class="orderListItemProductOriginalPrice">￥<fmt:formatNumber type="number" value="${oi.product.originalprice}" minFractionDigits="2"/></div>
+							<div class="orderListItemProductOriginalPrice" style="text-decoration:line-through">￥<fmt:formatNumber type="number" value="${oi.product.originalprice}" minFractionDigits="2"/></div>
 							<div class="orderListItemProductPrice">￥<fmt:formatNumber type="number" value="${oi.product.promoteprice}" minFractionDigits="2"/></div>
 		
 		
@@ -145,26 +159,26 @@ $(function(){
 								<div class="orderListItemPriceWithTransport">(含运费：￥0.00)</div>
 							</td>
 							<td valign="top" rowspan="${fn:length(o.orderItems)}" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">
-								<c:if test="${o.status=='waitConfirm' }">
-									<a href="foreconfirmPay?oid=${o.id}">
-										<button class="orderListItemConfirm">确认收货</button>
+								<c:if test="${o.status=='等待确认' }">
+									<a href="foreconfirmPay?id=${o.id}">
+										<button id="btn_confirm" link="foreconfirmPay?id=${o.id}" class="orderListItemConfirm">确认收货</button>
 									</a>
 								</c:if>
-								<c:if test="${o.status=='waitPay' }">
+								<c:if test="${o.status=='等待支付' }">
 									<a href="pay?oid=${o.id}&total=${o.total}">
 										<button class="orderListItemConfirm">付款</button>
 									</a>								
 								</c:if>
 								
-								<c:if test="${o.status=='waitDelivery' }">
+								<c:if test="${o.status=='等待发送' }">
 									<span>待发货</span>
-									<%--<button class="btn btn-info btn-sm ask2delivery" link="admin_order_delivery?id=${o.id}">催卖家发货</button> --%>
+									<button class="btn btn-info btn-sm ask2delivery" link="foredelivery?id=${o.id}">催卖家发货</button>
 									
 								</c:if>
 
-								<c:if test="${o.status=='waitReview' }">
-									<a href="forereview?oid=${o.id}">
-										<button  class="orderListItemReview">评价</button>
+								<c:if test="${o.status=='等待评价' }">
+									<a href="forecomment?oid=${o.id}">
+										<button  class="btn btn-warning orderListItemReview">评价</button>
 									</a>
 								</c:if>
 							</td>						

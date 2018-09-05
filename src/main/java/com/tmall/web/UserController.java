@@ -18,6 +18,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 显示用户列表方法
+     * @param model
+     * @param page
+     * @return
+     */
     @RequestMapping("/user_list")
     public String userlist(Model model, Page page) {
         PageHelper.offsetPage(page.getStart(), page.getCount());
@@ -28,4 +34,15 @@ public class UserController {
         model.addAttribute("page", page);
         return "admin/listUser";
     }
+
+    /**
+     * 删除用户方法，但以用户id为外键的表太多，删除用户需要删除跟该用户相关的表的内容，所以不添加删除功能
+     * @param id
+     * @return
+     */
+//    @RequestMapping("/user_delete")
+//    public String userDelete(Integer id) {
+//        userService.deleteUser(id);
+//        return "redirect:/user_list";
+//    }
 }

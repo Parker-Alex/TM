@@ -14,8 +14,8 @@
 
 <div class="workingArea">
     <ol class="breadcrumb">
-        <li><a href="/category_list">所有分类</a> </li>
-        <li><a href="/property_list?cid=${p.category.id}">${p.category.name}</a> </li>
+        <li><a href="category_list">所有分类</a> </li>
+        <li><a href="property_list?cid=${p.category.id}">${p.category.name}</a> </li>
         <li class="active">编辑属性</li>
     </ol>
 

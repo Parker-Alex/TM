@@ -1732,6 +1732,8 @@ div.orderListItemProductLinkInnerDiv {
 div.orderListItemProductOriginalPrice {
 	color: #999999;
 	font-size: 14px;
+    /*在元素上画横线*/
+	text-decoration: line-through;
 }
 
 div.orderListItemProductPrice {
@@ -2035,7 +2037,7 @@ span.reviewProductInfoRightBelowText {
 	padding: 4px;
 	position: relative;
 	left: -4px;
-	top: -7px;
+	top: 10px;
 	color: #666666;
 }
 

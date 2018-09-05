@@ -33,7 +33,7 @@
 <div class="workingArea">
     <ol class="breadcrumb">
         <li><a href="category_list">所有分类</a> </li>
-        <li><a href="/product_list?cid=${c.id}">${c.name}</a> </li>
+        <li><a href="product_list?cid=${c.id}">${c.name}</a> </li>
         <li class="active">产品管理</li>
     </ol>
 
@@ -85,7 +85,7 @@
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增产品</div>
         <div class="panel-body">
-            <form method="post" id="addForm" action="/product_add">
+            <form method="post" id="addForm" action="product_add">
                 <table class="addTable">
                     <tr>
                         <td>产品名称</td>

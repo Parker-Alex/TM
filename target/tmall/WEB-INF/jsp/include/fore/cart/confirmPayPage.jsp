@@ -1,7 +1,3 @@
-<!-- 模仿天猫整站ssm 教程 为how2j.cn 版权所有-->
-<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
-<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
 	
@@ -9,13 +5,13 @@
 	<div class="confirmPayImageDiv">
 		<img src="img/site/comformPayFlow.png">
 		<div  class="confirmPayTime1">
-			<fmt:formatDate value="${o.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+			<fmt:formatDate value="${o.createdate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 		</div>
 		<div  class="confirmPayTime2">
-			<fmt:formatDate value="${o.payDate}" pattern="yyyy-MM-dd HH:mm:ss"/> 
+			<fmt:formatDate value="${o.paydate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 		</div>
 		<div class="confirmPayTime3">
-			yyyy-MM-dd HH:mm:ss 
+			<fmt:formatDate value="${o.deliverydate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 		</div>
 		
 
@@ -35,13 +31,13 @@
 			</thead>
 			<c:forEach items="${o.orderItems}" var="oi">
 				<tr>
-					<td><img width="50px" src="img/productSingle_middle/${oi.product.firstProductImage.id}.jpg"></td>
+					<td><img width="50px" src="img/product/${oi.product.id}/${oi.product.pictures[0].id}.jpg"></td>
 					<td class="confirmPayOrderItemProductLink">
 						<a href="#nowhere">${oi.product.name}</a>
 					</td>
-					<td>￥<fmt:formatNumber type="number" value="${oi.product.originalPrice}" minFractionDigits="2"/></td>
+					<td>￥<fmt:formatNumber type="number" value="${oi.product.originalprice}" minFractionDigits="2"/></td>
 					<td>1</td>
-					<td><span class="conformPayProductPrice">￥<fmt:formatNumber type="number" value="${oi.product.promotePrice}" minFractionDigits="2"/></span></td>
+					<td><span class="conformPayProductPrice">￥<fmt:formatNumber type="number" value="${oi.product.promoteprice}" minFractionDigits="2"/></span></td>
 					<td><span>快递 ： 0.00 </span></td>
 				</tr>
 			</c:forEach>
@@ -58,7 +54,7 @@
 		<table class="confirmPayOrderDetailTable">
 			<tr>
 				<td>订单编号：</td>
-				<td>${o.orderCode} <img width="23px" src="img/site/confirmOrderTmall.png"></td>
+				<td>${o.ordercode} <img width="23px" src="img/site/confirmOrderTmall.png"></td>
 			</tr>
 			<tr>
 				<td>卖家昵称：</td>
@@ -70,13 +66,13 @@
 			</tr>
 			<tr>
 				<td>成交时间：</td>
-				<td><fmt:formatDate value="${o.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				<td><fmt:formatDate value="${o.createdate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			</tr>
 		</table>
 		
 	</div>
 	<div class="confirmPayButtonDiv">
 		<div class="confirmPayWarning">请收到货后，再确认收货！否则您可能钱货两空！</div>
-		<a href="foreorderConfirmed?oid=${o.id}"><button class="confirmPayButton">确认支付</button></a>
+		<a href="foreorderConfirmed?id=${o.id}"><button class="confirmPayButton">确认支付</button></a>
 	</div>
 </div>

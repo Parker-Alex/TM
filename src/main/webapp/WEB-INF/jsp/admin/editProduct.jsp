@@ -14,8 +14,8 @@
 
 <div class="workingArea">
     <ol class="breadcrumb">
-        <li><a href="/category_list">所有分类</a> </li>
-        <li><a href="/product_list?cid=${p.category.id}">${p.category.name}</a> </li>
+        <li><a href="category_list">所有分类</a> </li>
+        <li><a href="product_list?cid=${p.category.id}">${p.category.name}</a> </li>
         <li class="active">${p.name}</li>
         <li class="active">编辑产品</li>
     </ol>
@@ -23,7 +23,7 @@
     <div class="panel panel-warning editDiv">
         <div class="panel-heading">编辑产品</div>
         <div class="panel-body">
-            <form method="post" id="editForm" action="/product_update">
+            <form method="post" id="editForm" action="product_update">
                 <table class="editTable">
                     <tr>
                         <td>产品名称</td>

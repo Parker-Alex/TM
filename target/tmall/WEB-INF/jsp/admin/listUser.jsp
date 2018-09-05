@@ -28,6 +28,7 @@
             <tr class="success">
                 <th>ID</th>
                 <th>用户名称</th>
+                <%--<th>删除</th>--%>
             </tr>
             </thead>
             <tbody>
@@ -35,6 +36,7 @@
                 <tr>
                     <td>${u.id}</td>
                     <td>${u.name}</td>
+                    <%--<td><a href="user_delete?id=${u.id}"><span class="glyphicon glyphicon-trash"></span></a></td>--%>
                 </tr>
             </c:forEach>
             </tbody>

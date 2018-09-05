@@ -194,7 +194,7 @@ $(function(){
 
         <div class="productSaleAndReviewNumber">
             <%--产片的评论数和销售额--%>
-            <%--<div>销量 <span class="redColor boldWord"> ${p.saleCount }</span></div>   --%>
+            <div>销量 <span class="redColor boldWord"> ${p.dealnum }</span></div>
             <div>累计评价 <span class="redColor boldWord"> ${p.commentnum}</span></div>
         </div>
         <div class="productNumber">

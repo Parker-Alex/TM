@@ -68,9 +68,9 @@
                         </c:if>
                     </td>
                 </tr>
+
                 <tr class="orderPageOrderItemTR"  oid=${o.id}>
                     <td colspan="10" align="center">
-
                         <div  class="orderPageOrderItem">
                             <table width="800px" align="center" class="orderPageOrderItemTable">
                                 <c:forEach items="${o.orderItems}" var="oi">
@@ -78,27 +78,21 @@
                                         <td align="left">
                                             <img width="40px" height="40px" src="img/product/${oi.product.id}${oi.product.pictures[0].id}.jpg">
                                         </td>
-
                                         <td>
                                             <a href="foreproduct?pid=${oi.product.id}">
                                                 <span>${oi.product.name}</span>
                                             </a>
                                         </td>
                                         <td align="right">
-
                                             <span class="text-muted">${oi.number}个</span>
                                         </td>
                                         <td align="right">
-
                                             <span class="text-muted">单价：￥${oi.product.promoteprice}</span>
                                         </td>
-
                                     </tr>
                                 </c:forEach>
-
                             </table>
                         </div>
-
                     </td>
                 </tr>
             </c:forEach>
@@ -109,8 +103,6 @@
     <div class="pageDiv">
         <%@include file="../include/admin/adminPage.jsp" %>
     </div>
-
-
 
 </div>
 

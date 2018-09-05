@@ -41,6 +41,11 @@ public class CommentServiceImpl implements CommentService {
         return commentMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 通过产品id得到该产品的评论列表
+     * @param pid
+     * @return
+     */
     @Override
     public List<Comment> listByPid(Integer pid) {
         CommentExample example = new CommentExample();
@@ -51,6 +56,10 @@ public class CommentServiceImpl implements CommentService {
         return comments;
     }
 
+    /**
+     * 为评论设置用户
+     * @param comment
+     */
     @Override
     public void fillComment(Comment comment) {
         int uid = comment.getUid();
