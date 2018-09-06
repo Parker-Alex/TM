@@ -9,7 +9,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/admin/adminHeader.jsp"%>
 <%@ include file="../include/admin/adminNavigator.jsp"%>
-
+<%
+    pageContext.setAttribute("PATH",request.getContextPath());
+%>
 <script>
     $(function () {
 
@@ -67,7 +69,7 @@
     <div class="panel panel-warning addDiv">
         <div class="panel-heading">新增分类</div>
         <div class="panel-body">
-            <form method="post" id="addForm" action="category_add" enctype="multipart/form-data">
+            <form method="post" id="addForm" action="${PATH}/category_add" enctype="multipart/form-data">
                 <table class="addTable">
                     <tr>
                         <td>分类名称</td>

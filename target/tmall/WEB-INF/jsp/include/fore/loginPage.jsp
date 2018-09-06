@@ -19,7 +19,7 @@
             return true;
         });
 
-        //当在输入框输入时，提示信息框消失
+//--------------------当在输入框输入时，提示信息框消失-------------------------
         $("form.loginForm input").keyup(function(){
             $("div.loginErrorMessageDiv").hide();
         });

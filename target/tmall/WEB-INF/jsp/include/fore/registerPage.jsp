@@ -6,8 +6,8 @@
     $(function(){
 
         <c:if test="${!empty msg}">
-        $("span.errorMessage").html("${msg}");
-        $("div.registerErrorMessageDiv").css("visibility","visible");
+			$("span.errorMessage").html("${msg}");
+			$("div.registerErrorMessageDiv").css("visibility","visible");
         </c:if>
 
         $(".registerForm").submit(function(){

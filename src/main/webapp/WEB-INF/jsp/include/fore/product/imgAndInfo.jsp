@@ -26,6 +26,7 @@ $(function(){
             num = stock;
         $(".productNumberSetting").val(num);
     });
+
     $(".decreaseNumber").click(function(){
         var num= $(".productNumberSetting").val();
         --num;
@@ -90,30 +91,30 @@ $(function(){
     });
 
 //------------------登录提交按钮事件-------------------------
-    $("button.loginSubmitButton").click(function () {
-        var name = $("#name").val();
-        var password = $("#password").val();
-
-        if (name.length == 0 || password.length == 0) {
-            $("span.errorMessage").html("请输入账号或密码");
-            $("div.loginErrorMessageDiv").show();
-            return false;
-        }
-
-        var page = "foreloginAjax";
-        $.get(
-            page,
-            {"name":name,"password":password},
-            function (result) {
-                if (result == "success") {
-                    location.reload();
-                }else {
-                    $("span.errorMessage").html("账号或密码错误");
-                    $("div.loginErrorMessageDiv").show();
-                }
-            }
-        );
-    });
+//     $("button.loginSubmitButton").click(function () {
+//         var name = $("#name").val();
+//         var password = $("#password").val();
+//
+//         if (name.length == 0 || password.length == 0) {
+//             $("span.errorMessage").html("请输入账号或密码");
+//             $("div.loginErrorMessageDiv").show();
+//             return false;
+//         }
+//
+//         var page = "foreloginAjax";
+//         $.get(
+//             page,
+//             {"name":name,"password":password},
+//             function (result) {
+//                 if (result == "success") {
+//                     location.reload();
+//                 }else {
+//                     $("span.errorMessage").html("账号或密码错误");
+//                     $("div.loginErrorMessageDiv").show();
+//                 }
+//             }
+//         );
+//     });
 
 //------------------------图片展示功能实现-------------------------------
     $("img.smallImage").mouseenter(function(){
