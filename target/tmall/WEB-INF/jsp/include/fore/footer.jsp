@@ -3,6 +3,11 @@
 
 
 <%@include file="modal.jsp" %>
+<a href="#myTop" style="float: right">
+    <span class="glyphicon glyphicon-menu-up">
+        返回顶部
+    </span>
+</a>
 
 <div id="footer"  class="footer" style="display: block;">
 

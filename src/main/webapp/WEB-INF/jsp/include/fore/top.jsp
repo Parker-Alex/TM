@@ -3,6 +3,7 @@
 
 <nav class="top ">
 	<%--<a href="${contextPath}">--%>
+    <a name="myTop"></a>
 	<a href="home">
 		<span style="color:#C40000;margin:0px" class=" glyphicon glyphicon-home redColor"></span>
 		天猫首页

@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" isELIgnored="false"%>
-	
+
+<script>
+    $(function () {
+
+    })
+</script>
 <div class="reviewDiv">
 	<div class="reviewProductInfoDiv">
 		<div class="reviewProductInfoImg"><img width="400px" height="400px" src="img/product/${p.id}${p.pictures[0].id}.jpg"></div>

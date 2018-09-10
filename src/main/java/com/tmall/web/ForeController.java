@@ -6,11 +6,13 @@ import com.tmall.pojo.*;
 import com.tmall.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.print.attribute.standard.RequestingUserName;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -365,6 +367,9 @@ public class ForeController {
         order.setOrdercode(orderCode);
         order.setUid(user.getId());
         order.setCreatedate(new Date());
+        if (order.getStatus().equals(OrderEnum.WAIT_PAY.getMsg())) {
+            throw new RuntimeException();
+        }
         order.setStatus(OrderEnum.WAIT_PAY.getMsg());
         List<OrderItem> orderItems = (List<OrderItem>) session.getAttribute("ois");
         float total = orderService.add(order, orderItems);
@@ -380,6 +385,9 @@ public class ForeController {
     @RequestMapping("/forepayed")
     public String forepayed(Model model, Integer oid) {
         Order order = orderService.getOrder(oid);
+        if (order.getStatus().equals(OrderEnum.WAIT_DELIVERY.getMsg())) {
+            throw new RuntimeException();
+        }
         order.setStatus(OrderEnum.WAIT_DELIVERY.getMsg());
         order.setPaydate(new Date());
         orderService.updateOrder(order);
@@ -412,6 +420,9 @@ public class ForeController {
     @ResponseBody
     public String foredeleteOrder(Integer oid) {
         Order order = orderService.getOrder(oid);
+        if (order.getStatus().equals(OrderEnum.DELETE.getMsg())) {
+            throw new RuntimeException();
+        }
         order.setStatus(OrderEnum.DELETE.getMsg());
         orderService.updateOrder(order);
         return "success";
@@ -426,6 +437,9 @@ public class ForeController {
     @ResponseBody
     public String foredelivery(Integer id) {
         Order order = orderService.getOrder(id);
+        if (order.getStatus().equals(OrderEnum.WAIT_CONFIRM.getMsg())) {
+            throw new RuntimeException();
+        }
         order.setStatus(OrderEnum.WAIT_CONFIRM.getMsg());
         order.setDeliverydate(new Date());
         orderService.updateOrder(order);
@@ -453,11 +467,15 @@ public class ForeController {
      * @return
      */
     @RequestMapping("/foreorderConfirmed")
-    public String foreorderConfirmed(Integer id) {
+    public String foreorderConfirmed(Integer id, Model model) {
         Order order = orderService.getOrder(id);
+        if (order.getStatus().equals(OrderEnum.WAIT_COMMENT.getMsg())) {
+            throw new RuntimeException();
+        }
         order.setStatus(OrderEnum.WAIT_COMMENT.getMsg());
         order.setConfirmdate(new Date());
         orderService.updateOrder(order);
+        model.addAttribute("o", order);
         return "fore/orderConfirmed";
     }
 
@@ -491,11 +509,15 @@ public class ForeController {
      * @return
      */
     @RequestMapping("/foredocomment")
+    @Transactional
     public String foredocomment(@RequestParam("oid") Integer oid,
                                 @RequestParam("pid") Integer pid,
                                 @RequestParam("content") String content,
-                                HttpSession session) {
+                                HttpSession session, Model model) {
         Order order = orderService.getOrder(oid);
+        if (order.getStatus().equals(OrderEnum.FINISH.getMsg())) {
+            throw new RuntimeException();
+        }
         order.setStatus(OrderEnum.FINISH.getMsg());
         orderService.updateOrder(order);
         User user = (User) session.getAttribute("userinfo");

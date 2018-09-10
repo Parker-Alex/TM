@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin")
+//@RequestMapping("/admin")
 public class CategoryController {
 
     @Autowired
