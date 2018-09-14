@@ -65,6 +65,8 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public void setProduct(OrderItem orderItem) {
         Product product = productService.getProduct(orderItem.getPid());
+        product.setStock(product.getStock() - orderItem.getNumber());
+        productService.updateProduct(product);
         orderItem.setProduct(product);
     }
 

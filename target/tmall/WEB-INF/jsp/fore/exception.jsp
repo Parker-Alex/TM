@@ -16,5 +16,5 @@
     <span>你已完成该操作，请勿重复</span>
 </div>
 
-<%--<%@include file="../include/fore/footer.jsp"%>--%>
+<%@include file="../include/fore/footer.jsp"%>
 

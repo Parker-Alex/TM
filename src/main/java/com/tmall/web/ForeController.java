@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.print.attribute.standard.RequestingUserName;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -230,7 +229,7 @@ public class ForeController {
     }
 
     /**
-     * 立即购买产品方法
+     * 立即购买方法
      * @param pid
      * @param num
      * @param session
@@ -239,32 +238,53 @@ public class ForeController {
     @RequestMapping("/forebuyone")
     public String foreBuyOne(Integer pid, Integer num, HttpSession session) {
         Product product = productService.getProduct(pid);
+        product.setStock(product.getStock() - num);
+        productService.updateProduct(product);
         User user = (User) session.getAttribute("userinfo");
-        List<OrderItem> orderItems = orderItemService.listByUid(user.getId());
-//        标识是否已有该产品的订单
-        boolean having = false;
-        int orderItemId = 0;
-        for (OrderItem orderItem : orderItems) {
-//            intValue() 将Integer类型对象转化成int类型
-            if (orderItem.getPid().intValue() == product.getId().intValue()) {
-                orderItem.setNumber(orderItem.getNumber() + num);
-                orderItemService.updateOI(orderItem);
-                orderItemId = orderItem.getId();
-                having = true;
-                break;
-            }
-        }
-//        如果没有该产品的订单，就生成新的订单
-        if (!having) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setNumber(num);
-            orderItem.setUid(user.getId());
-            orderItem.setPid(product.getId());
-            orderItemService.addOI(orderItem);
-            orderItemId = orderItem.getId();
-        }
-        return "redirect:forebuy?oiid=" + orderItemId;
+        OrderItem orderItem = new OrderItem();
+        orderItem.setPid(product.getId());
+        orderItem.setUid(user.getId());
+        orderItem.setNumber(num);
+        orderItemService.addOI(orderItem);
+        return "redirect:forebuy?oiid=" + orderItem.getId();
     }
+
+//    /**
+//     * 立即购买产品方法
+//     * @param pid
+//     * @param num
+//     * @param session
+//     * @return
+//     */
+//    @RequestMapping("/forebuyone")
+//    public String foreBuyOne(Integer pid, Integer num, HttpSession session) {
+//        Product product = productService.getProduct(pid);
+//        User user = (User) session.getAttribute("userinfo");
+//        List<OrderItem> orderItems = orderItemService.listByUid(user.getId());
+////        标识是否已有该产品的订单
+//        boolean having = false;
+//        int orderItemId = 0;
+//        for (OrderItem orderItem : orderItems) {
+////            intValue() 将Integer类型对象转化成int类型
+//            if (orderItem.getPid().intValue() == product.getId().intValue()) {
+//                orderItem.setNumber(orderItem.getNumber() + num);
+//                orderItemService.updateOI(orderItem);
+//                orderItemId = orderItem.getId();
+//                having = true;
+//                break;
+//            }
+//        }
+////        如果没有该产品的订单，就生成新的订单
+//        if (!having) {
+//            OrderItem orderItem = new OrderItem();
+//            orderItem.setNumber(num);
+//            orderItem.setUid(user.getId());
+//            orderItem.setPid(product.getId());
+//            orderItemService.addOI(orderItem);
+//            orderItemId = orderItem.getId();
+//        }
+//        return "redirect:forebuy?oiid=" + orderItemId;
+//    }
 
     /**
      * 购买后跳转到提交订单信息页面方法
@@ -367,9 +387,6 @@ public class ForeController {
         order.setOrdercode(orderCode);
         order.setUid(user.getId());
         order.setCreatedate(new Date());
-        if (order.getStatus().equals(OrderEnum.WAIT_PAY.getMsg())) {
-            throw new RuntimeException();
-        }
         order.setStatus(OrderEnum.WAIT_PAY.getMsg());
         List<OrderItem> orderItems = (List<OrderItem>) session.getAttribute("ois");
         float total = orderService.add(order, orderItems);
@@ -437,9 +454,6 @@ public class ForeController {
     @ResponseBody
     public String foredelivery(Integer id) {
         Order order = orderService.getOrder(id);
-        if (order.getStatus().equals(OrderEnum.WAIT_CONFIRM.getMsg())) {
-            throw new RuntimeException();
-        }
         order.setStatus(OrderEnum.WAIT_CONFIRM.getMsg());
         order.setDeliverydate(new Date());
         orderService.updateOrder(order);
