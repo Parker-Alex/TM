@@ -29,6 +29,7 @@ D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\service\impl\Produ
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\service\PropertyValueService.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\web\PageController.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\service\OrderItemService.java
+D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\web\advice\MyAdvice.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\util\Page.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\pojo\Picture.java
 D:\masterSpring\code\SpringBoot\tmall\src\main\java\com\tmall\pojo\Comment.java

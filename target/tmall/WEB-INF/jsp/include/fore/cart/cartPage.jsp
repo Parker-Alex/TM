@@ -98,12 +98,12 @@ $(function(){
 		
 		syncPrice(pid,num,price);
 	});
-
+    //商品数量增加事件
 	$(".numberPlus").click(function(){
 		
 		var pid=$(this).attr("pid");
 		var stock= $("span.orderItemStock[pid="+pid+"]").text();
-		var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
+		var price= $(".orderItemPromotePrice[pid="+pid+"]").val();
 		var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
 
 		num++;
@@ -111,11 +111,11 @@ $(function(){
 			num = stock;
 		syncPrice(pid,num,price);
 	});
-
+    //商品数量减少事件
 	$(".numberMinus").click(function(){
 		var pid=$(this).attr("pid");
 		var stock= $("span.orderItemStock[pid="+pid+"]").text();
-		var price= $("span.orderItemPromotePrice[pid="+pid+"]").text();
+		var price= $(".orderItemPromotePrice[pid="+pid+"]").val();
 		
 		var num= $(".orderItemNumberSetting[pid="+pid+"]").val();
 		--num;
@@ -182,7 +182,7 @@ function calcCartSumPriceAndNumber(){
 		sum += new Number(price);	
 		
 		var num =$(".orderItemNumberSetting[oiid="+oiid+"]").val();
-		totalNumber += new Number(num);	
+		totalNumber += new Number(num);
 		
 	});
 	
@@ -190,13 +190,16 @@ function calcCartSumPriceAndNumber(){
 	$("span.cartTitlePrice").html("￥"+formatMoney(sum));
 	$("span.cartSumNumber").html(totalNumber);
 }
+//异步修改订单项的数量
 function syncPrice(pid,num,price){
 	$(".orderItemNumberSetting[pid="+pid+"]").val(num);
 	var cartProductItemSmallSumPrice = formatMoney(num*price); 
 	$(".cartProductItemSmallSumPrice[pid="+pid+"]").html("￥"+cartProductItemSmallSumPrice);
 	calcCartSumPriceAndNumber();
 	
-	var page = "forechangeOrderItem";
+	var page = "forechangeorderitem";
+	alert(num)
+    alert(pid);
 	$.post(
 		    page,
 		    {"pid":pid,"number":num},
@@ -264,13 +267,13 @@ function syncPrice(pid,num,price){
 						
 							<div class="cartProductChangeNumberDiv">
 								<span class="hidden orderItemStock " pid="${oi.product.id}">${oi.product.stock}</span>
-								<span class="hidden orderItemPromotePrice " pid="${oi.product.id}">${oi.product.promoteprice}</span>
+								<input class="hidden orderItemPromotePrice " pid="${oi.product.id}" value="${oi.product.promoteprice}">
 								<a  pid="${oi.product.id}" class="numberMinus" href="#nowhere">-</a>
 								<input pid="${oi.product.id}" oiid="${oi.id}" class="orderItemNumberSetting" autocomplete="off" value="${oi.number}">
 								<a  stock="${oi.product.stock}" pid="${oi.product.id}" class="numberPlus" href="#nowhere">+</a>
 							</div>					
 						
-						 </td>
+                        </td>
 						<td >
 							<span class="cartProductItemSmallSumPrice" oiid="${oi.id}" pid="${oi.product.id}" >
 							￥<fmt:formatNumber type="number" value="${oi.product.promoteprice * oi.number}" minFractionDigits="2"/>

@@ -238,8 +238,6 @@ public class ForeController {
     @RequestMapping("/forebuyone")
     public String foreBuyOne(Integer pid, Integer num, HttpSession session) {
         Product product = productService.getProduct(pid);
-        product.setStock(product.getStock() - num);
-        productService.updateProduct(product);
         User user = (User) session.getAttribute("userinfo");
         OrderItem orderItem = new OrderItem();
         orderItem.setPid(product.getId());
@@ -389,6 +387,17 @@ public class ForeController {
         order.setCreatedate(new Date());
         order.setStatus(OrderEnum.WAIT_PAY.getMsg());
         List<OrderItem> orderItems = (List<OrderItem>) session.getAttribute("ois");
+        //对于订单项列表中的每一个订单项
+        for (OrderItem oi : orderItems) {
+            //得到订单项对应的商品
+            Product product = oi.getProduct();
+            //得到现有的库存
+            int stock = product.getStock();
+            //设置最新的库存
+            product.setStock(stock - oi.getNumber());
+            //更新商品
+            productService.updateProduct(product);
+        }
         float total = orderService.add(order, orderItems);
         return "redirect:/pay?oid=" + order.getId() + "&total=" + total;
     }
@@ -542,6 +551,29 @@ public class ForeController {
         comment.setContent(content);
         commentService.addComment(comment);
         return "redirect:/forecomment?oid=" + oid + "&showonly=true";
+    }
+
+    /**
+     * ”我的购物车“ 修改订单项数量方法
+     * @param pid
+     * @param number
+     * @param session
+     * @return
+     */
+    @RequestMapping("/forechangeorderitem")
+    @ResponseBody
+    public String foreChangeOrderItem(Integer pid, Integer number, HttpSession session) {
+        User user = (User) session.getAttribute("userinfo");
+        if (user == null) {
+            return "fail";
+        }else {
+            List<OrderItem> orderItems = orderItemService.listByPid(pid);
+            for (OrderItem oi : orderItems) {
+                oi.setNumber(number);
+                orderItemService.updateOI(oi);
+            }
+            return "success";
+        }
     }
 
 }
